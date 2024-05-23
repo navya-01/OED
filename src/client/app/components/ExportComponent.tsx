@@ -23,7 +23,7 @@ export default function ExportComponent() {
 			{
 				<div>
 					{/* will not dispatch if data in flight */}
-					<Button color='secondary' outline onClick={() => dispatch(exportGraphReadingsThunk())}>
+					<Button data-cy="export-graph" color='secondary' outline onClick={() => dispatch(exportGraphReadingsThunk())}>
 						<FormattedMessage id='export.graph.data' />
 					</Button>
 					<TooltipMarkerComponent page='home' helpTextId='help.home.export.graph.data' />

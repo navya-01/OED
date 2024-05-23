@@ -2,19 +2,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { sortBy, values } from 'lodash';
-import * as React from 'react';
-import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
-import { useAppDispatch, useAppSelector } from '../redux/reduxHooks';
-import { graphSlice, selectChartToRender } from '../redux/slices/graphSlice';
-import { SelectOption } from '../types/items';
-import { ChartTypes } from '../types/redux/graph';
-import { State } from '../types/redux/state';
-import translate from '../utils/translate';
-import TooltipMarkerComponent from './TooltipMarkerComponent';
+import { sortBy, values } from "lodash";
+import * as React from "react";
+import { useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { useSelector } from "react-redux";
+import {
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
+} from "reactstrap";
+import { useAppDispatch, useAppSelector } from "../redux/reduxHooks";
+import { graphSlice, selectChartToRender } from "../redux/slices/graphSlice";
+import { SelectOption } from "../types/items";
+import { ChartTypes } from "../types/redux/graph";
+import { State } from "../types/redux/state";
+import translate from "../utils/translate";
+import TooltipMarkerComponent from "./TooltipMarkerComponent";
 
 /**
  *  A component that allows users to select which chart should be displayed.
@@ -25,17 +30,32 @@ export default function ChartSelectComponent() {
 	const dispatch = useAppDispatch();
 	const [expand, setExpand] = useState(false);
 	const mapsById = useSelector((state: State) => state.maps.byMapID);
-	const sortedMaps = sortBy(values(mapsById).map(map => (
-		{ value: map.id, label: map.name, isDisabled: !(map.origin && map.opposite) } as SelectOption
-	)), 'label');
+	const sortedMaps = sortBy(
+		values(mapsById).map(
+			(map) =>
+				({
+					value: map.id,
+					label: map.name,
+					isDisabled: !(map.origin && map.opposite),
+				} as SelectOption)
+		),
+		"label"
+	);
 
 	return (
 		<>
-			<p style={labelStyle}>
-				<FormattedMessage id='graph.type' />:
-				<TooltipMarkerComponent page='home' helpTextId='help.home.chart.select' />
+			<p style={labelStyle} data-cy="graph-type-title">
+				<FormattedMessage id="graph.type" />:
+				<TooltipMarkerComponent
+					page="home"
+					helpTextId="help.home.chart.select"
+				/>
 			</p>
-			<Dropdown isOpen={expand} toggle={() => setExpand(!expand)}>
+			<Dropdown
+				isOpen={expand}
+				toggle={() => setExpand(!expand)}
+				data-cy="graph-type-button"
+			>
 				<DropdownToggle outline caret>
 					<FormattedMessage id={currentChartToRender} />
 				</DropdownToggle>
@@ -44,31 +64,37 @@ export default function ChartSelectComponent() {
 						// Make items for dropdown from enum
 						Object.values(ChartTypes)
 							// filter out current chart
-							.filter(chartType => chartType !== currentChartToRender)
+							.filter((chartType) => chartType !== currentChartToRender)
 							.sort()
 							// map to components
-							.map(chartType =>
+							.map((chartType) => (
 								<DropdownItem
+									data-cy={`graph-type-button-selected-${chartType}`}
 									key={chartType}
 									onClick={() => {
 										dispatch(graphSlice.actions.changeChartToRender(chartType));
-										if (chartType === ChartTypes.map && Object.keys(sortedMaps).length === 1) {
+										if (
+											chartType === ChartTypes.map &&
+											Object.keys(sortedMaps).length === 1
+										) {
 											// If there is only one map, selectedMap is the id of the only map. ie; display map automatically if only 1 map
-											dispatch({ type: 'UPDATE_SELECTED_MAPS', mapID: sortedMaps[0].value });
-
+											dispatch({
+												type: "UPDATE_SELECTED_MAPS",
+												mapID: sortedMaps[0].value,
+											});
 										}
 									}}
 								>
 									{translate(`${chartType}`)}
 								</DropdownItem>
-							)
+							))
 					}
 				</DropdownMenu>
-			</Dropdown >
-		</ >
+			</Dropdown>
+		</>
 	);
 }
 const labelStyle: React.CSSProperties = {
-	fontWeight: 'bold',
-	margin: 0
+	fontWeight: "bold",
+	margin: 0,
 };

@@ -42,9 +42,12 @@ export default function MeterAndGroupSelectComponent(props: MeterAndGroupSelectP
 
 	return (
 		<>
-			<p style={labelStyle}>
+			<p style={labelStyle} data-cy={`${meterOrGroup}-title`}>
 				{translate(`${meterOrGroup}`)}:
-				<TooltipMarkerComponent page='home' helpTextId={`help.home.select.${meterOrGroup}`} />
+				<TooltipMarkerComponent
+					page="home"
+					helpTextId={`help.home.select.${meterOrGroup}`}
+				/>
 			</p>
 			<Select<SelectOption, true, GroupedOption>
 				isMulti
@@ -59,6 +62,8 @@ export default function MeterAndGroupSelectComponent(props: MeterAndGroupSelectP
 				components={animatedComponents}
 				styles={customStyles}
 				isLoading={somethingIsFetching}
+				data-cy={`${ meterOrGroup }-select`}
+				id={`${ meterOrGroup }-select`}
 			/>
 		</>
 	);
@@ -94,11 +99,13 @@ const MultiValueLabel = (props: MultiValueGenericProps<SelectOption, true, Group
 	const onThreeD = useAppSelector(state => selectChartToRender(state) === ChartTypes.threeD);
 	// TODO Verify behavior, and set proper message/ translate
 	return (
-		< div ref={ref}
+		<div
+			data-cy="hello-select"
+			ref={ref}
 			key={`${typedProps.data.value}:${typedProps.data.label}:${typedProps.data.isDisabled}`}
-			data-for={isDisabled ? 'home' : 'select-tooltips'}
-			data-tip={isDisabled ? 'help.home.area.normalize' : `${props.data.label}`}
-			onMouseDown={e => {
+			data-for={isDisabled ? "home" : "select-tooltips"}
+			data-tip={isDisabled ? "help.home.area.normalize" : `${props.data.label}`}
+			onMouseDown={(e) => {
 				e.stopPropagation();
 				ReactTooltip.rebuild();
 				ref.current && ReactTooltip.show(ref.current);
@@ -106,14 +113,14 @@ const MultiValueLabel = (props: MultiValueGenericProps<SelectOption, true, Group
 					dispatch(
 						updateThreeDMeterOrGroupInfo({
 							meterOrGroupID: typedProps.data.value,
-							meterOrGroup: typedProps.data.meterOrGroup!
+							meterOrGroup: typedProps.data.meterOrGroup!,
 						})
 					);
 				}
 			}}
-			onClick={e => e.stopPropagation()}
-			style={{ overflow: 'hidden' }}
-			onMouseEnter={e => {
+			onClick={(e) => e.stopPropagation()}
+			style={{ overflow: "hidden" }}
+			onMouseEnter={(e) => {
 				if (!isDisabled) {
 					const multiValueLabel = e.currentTarget.children[0];
 					// display a react tooltip for options that have overflowing/cutoff labels.
@@ -127,7 +134,7 @@ const MultiValueLabel = (props: MultiValueGenericProps<SelectOption, true, Group
 			}}
 		>
 			<components.MultiValueLabel {...props} />
-		</div >
+		</div>
 	);
 
 };

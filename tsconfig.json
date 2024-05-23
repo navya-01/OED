@@ -7,7 +7,7 @@
 	"compilerOptions": {
 		"baseUrl": "./src/client/app/",
 		"outDir": "./src/client/public/app/",
-		"sourceMap": true,
+		"sourceMap": false,
 		"module": "commonjs",
 		"target": "es5",
 		"jsx": "react",
@@ -27,7 +27,7 @@
 		"noUnusedLocals": true,
 	},
 	"include": [
-		"./src/client/app/**/*"
+		"./src/client/app/**/*", "cypress"
 	],
 	"exclude": [
 		"node_modules"

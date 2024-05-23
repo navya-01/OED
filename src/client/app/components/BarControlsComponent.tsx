@@ -41,16 +41,16 @@ export default function BarControlsComponent() {
 	return (
 		<div>
 			<div className='checkbox'>
-				<input type='checkbox' style={{ marginRight: '10px' }} onChange={handleChangeBarStacking} checked={barStacking} id='barStacking' />
+				<input type='checkbox' style={{ marginRight: '10px' }} onChange={handleChangeBarStacking} checked={barStacking} id='barStacking' data-cy='bar-stacking'/>
 				<label htmlFor='barStacking'>{translate('bar.stacking')}</label>
 				<TooltipMarkerComponent page='home' helpTextId='help.home.bar.stacking.tip' />
 			</div>
 			<div>
-				<p style={labelStyle}>{translate('bar.interval')}:</p>
+				<p style={labelStyle} data-cy='bar-interval'>{translate('bar.interval')}:</p>
 				<ButtonGroup style={zIndexFix}>
-					<Button outline={barDurationDays !== 1} onClick={() => updateBarDurationChange(1)}> {translate('day')} </Button>
-					<Button outline={barDurationDays !== 7} onClick={() => updateBarDurationChange(7)}> {translate('week')} </Button>
-					<Button outline={barDurationDays !== 28} onClick={() => updateBarDurationChange(28)}> {translate('4.weeks')} </Button>
+					<Button outline={barDurationDays !== 1} onClick={() => updateBarDurationChange(1)} data-cy='day-button'> {translate('day')} </Button>
+					<Button outline={barDurationDays !== 7} onClick={() => updateBarDurationChange(7)} datacy='week-button'> {translate('week')} </Button>
+					<Button outline={barDurationDays !== 28} onClick={() => updateBarDurationChange(28)} data-cy='4-week-button'> {translate('4.weeks')} </Button>
 				</ButtonGroup>
 				<TooltipMarkerComponent page='home' helpTextId='help.home.bar.interval.tip' />
 			</div>
